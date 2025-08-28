@@ -1,5 +1,7 @@
 package com.ddu.member.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ddu.member.dao.MemberDao;
+import com.ddu.member.dto.MemberDto;
 
 @Controller
 public class MemberController {
@@ -33,5 +36,23 @@ public class MemberController {
 		memberDao.insertMember(mid, mpw, mname, mage);
 		
 		return "redirect:memberList";
+	}
+	@RequestMapping(value = "/memberList")
+	public String memberList(Model model) {
+		
+		List<MemberDto> memberDtos =memberDao.searchMembers();
+		model.addAttribute("mDtos",memberDtos);
+		return "memberList";
+	}
+	@RequestMapping(value = "/search")
+	public String search() {
+		return "searchMember";
+	}
+	@RequestMapping(value = "/searchOk")
+	public String searchOk(HttpServletRequest request, Model model) {
+		MemberDto memberDto = memberDao.searchMember(request.getParameter("memberid"));
+		model.addAttribute("memberDto",memberDto);
+		model.addAttribute("result","1");
+		return "searchMember";
 	}
 }
