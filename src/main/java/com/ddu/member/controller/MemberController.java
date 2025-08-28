@@ -32,6 +32,6 @@ public class MemberController {
 		
 		memberDao.insertMember(mid, mpw, mname, mage);
 		
-		return "resirect:memberList";
+		return "redirect:memberList";
 	}
 }
